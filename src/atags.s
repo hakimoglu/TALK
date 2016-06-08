@@ -16,18 +16,14 @@
 
 .section .text
 
-.global boot
+atags:
+	ldmfd sp!, a1
+	b 2f
 
-boot:
-	ldr sp,=stackt		@ Initialize stack.
+1:
+	add a1, a1, #4
+2:
+	cmp a0, #0
+	beq 1b		@ If equal, jump to local symbol 1 (B)efore.
 
-	bl atags		@ Read ATAGS.
-
-	
-
-.section .bss
-
-@ Reserve 2kb of stack space.
-stackb:
-	.skip 2048
-stackt:
+	bx lr		@ Return.
