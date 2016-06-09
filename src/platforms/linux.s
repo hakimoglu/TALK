@@ -16,18 +16,16 @@
 
 .section .text
 
-.global boot
+.global describe
 
-boot:
-	ldr sp,=stackt		@ Initialize stack.
+@ Read the description type.
+@ IN:	r0:	ARM Linux device type.
+@ OUT:	r0:	DESC* - Defined in common.s.
+describe:
+	ldr r1, #0xC42		@ Raspberry Pi - Uses ATAGS.
+	cmp r0, r1
+	ldreq r0, =DESCATAGS
+	bxeq lr
 
-	bl atags		@ Read ATAGS.
-
-	
-
-.section .bss
-
-@ Reserve 2kb of stack space.
-stackb:
-	.skip 2048
-stackt:
+	ldr r0, =DESCUNKN	@ We don't support it at the moment, return UNKNOWN.
+	bx lr
