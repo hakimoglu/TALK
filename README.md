@@ -1,2 +1,2 @@
-# Valency
-A kernel for the Raspberry Pi.
+# TALK
+The ARM Linuxlike Kernel.
