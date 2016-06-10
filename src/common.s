@@ -1,4 +1,4 @@
-@ This file is part of TALK, The ARM Linuxlike Kernel.
+@ This file is part of TALK, The ARM Lightweight Kernel.
 @ Copyright (C) 2016 Ayhan Hakimoglu
 @
 @ TALK is free software: you can redistribute it and/or modify

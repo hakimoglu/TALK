@@ -1,2 +1,2 @@
 # TALK
-The ARM Linuxlike Kernel.
+The ARM Lightweight Kernel.
