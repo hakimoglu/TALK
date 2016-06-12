@@ -27,20 +27,28 @@ ELF := bin/kernel.elf
 OUTPUT := kernel.img
 OUTTYPE := binary
 
-CFLAGS := -fpic -ffreestanding -std=gnu99  -O2 -mcpu=arm1176jzf-s
+CFLAGS := -fpic -ffreestanding -std=gnu99  -O2
 LDFLAGS := -ffreestanding -O2 -nostdlib  -lgcc
 
 SRCFILES := $(shell find src -type f -name "*.s")
 OFILES := $(patsubst %.s,%.o,$(patsubst src/%,bin/%,$(SRCFILES)))
+PLATFILES := $(shell find platforms -type f -name "*.s")
+PLATFORMS := $(patsubst %.s,%,$(patsubst platforms/%,%,$(PLATFILES)))
+TARGETPLAT := platforms/target.s
+OUTPLAT := $(patsubst %.s,%.o,$(patsubst platforms/%,bin/%,$(TARGETPLAT)))
+
+TARGETCPU := -mcpu=$(strip $(subst @,,$(shell head -n 1 $(TARGETPLAT))))
 
 all : $(OUTPUT) distclean
 
 clean : distclean
 	-rm -f $(OUTPUT)
 	-rm -f $(ELF)
+	-rm -f $(TARGETPLAT)
 
 distclean :
 	-rm -f $(OFILES)
+	-rm -f $(OUTPLAT)
 
 $(OUTPUT) : $(ELF)
 	$(PREFIX)objcopy -O $(OUTTYPE) $(ELF) $(OUTPUT)
@@ -48,10 +56,15 @@ $(OUTPUT) : $(ELF)
 $(ELF) : $(OFILES) $(LINK)
 	$(CC) $(LDFLAGS) -T $(LINK) -o $(ELF) $(OFILES)
 
-bin/%.o : src/%.s Makefile
+bin/%.o : src/%.s
 	-mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(MCPU) -c $< -o $@
 
-$(LINK) :
+$(OUTPLAT) : $(TARGETPLAT)
+	-mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(MCPU) -c $< -o $@
 
-.PHONY : all clean distclean
+$(PLATFORMS) :
+	cp platforms/$@.s $(TARGETPLAT)
+
+.PHONY : all clean distclean $(PLATFORMS)

@@ -19,21 +19,7 @@
 .global start
 
 start:
-	ldr sp,=stackt		@ Initialize stack.
-
-	mov r0, r1
-	stmfd lr!, {r1-r3}
-	bl describe		@ Get the method in which hardware is described.
-	ldmfd lr!, {r1-r3}
-	ldr r2, =DESCUNKN
-	ldr r2, [r2]
-	cmp r0, r2
-	beq halt		@ HALT if unknown.
-
-	ldr r3, =DESCTYPE	@ Store the description type and ram address of descriptor.
-	str r3, [r0]
-	ldr r3, =DESCADDR
-	str r3, [r2]
+	setend le		@ Just make sure we're in little endian.
 
 .section .bss
 
