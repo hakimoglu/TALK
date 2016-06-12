@@ -14,7 +14,7 @@
 @ You should have received a copy of the GNU General Public License
 @ along with TALK.  If not, see <http://www.gnu.org/licenses/>.
 
-.section .text
+.section .boot
 
 .global start
 
@@ -22,16 +22,18 @@ start:
 	ldr sp,=stackt		@ Initialize stack.
 
 	mov r0, r1
-	stmfd ld!, {r1-r3}
+	stmfd lr!, {r1-r3}
 	bl describe		@ Get the method in which hardware is described.
-	ldmfd ld!, {r1-r3}
-	cmp r0, =DESCUNKN
+	ldmfd lr!, {r1-r3}
+	ldr r2, =DESCUNKN
+	ldr r2, [r2]
+	cmp r0, r2
 	beq halt		@ HALT if unknown.
 
 	ldr r3, =DESCTYPE	@ Store the description type and ram address of descriptor.
-	stm r3!, r0
+	str r3, [r0]
 	ldr r3, =DESCADDR
-	stm r3!, r2
+	str r3, [r2]
 
 .section .bss
 

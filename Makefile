@@ -23,34 +23,38 @@ PREFIX := arm-none-eabi-
 CC := $(PREFIX)gcc
 
 LINK := src/linker.ld
+ELF := bin/kernel.elf
+OUTPUT := kernel.img
+OUTTYPE := binary
 
 CFLAGS := -fpic -ffreestanding -std=gnu99  -O2 -mcpu=arm1176jzf-s
 LDFLAGS := -ffreestanding -O2 -nostdlib  -lgcc
 
 SRCFILES := $(shell find src -type f -name "*.s")
-DEPFILES := $(patsubst %.s,%.d,$(SRCFILES))
 OFILES := $(patsubst %.s,%.o,$(patsubst src/%,bin/%,$(SRCFILES)))
 
 -include $(DEPFILES)
 
-all : kernel.img
+all : $(OUTPUT) distclean
 
-clean :
+clean : distclean
+	-rm -f $(OUTPUT)
+	-rm -f $(ELF)
+
+distclean :
 	-rm -f $(OFILES)
 	-rm -f $(DEPFILES)
-	-rm -f bin/talk.elf
-	-rm -f kernel.img
 
-kernel.img : bin/talk.elf
-	$(PREFIX)objcopy bin/talk.elf -O binary kernel.img
+$(OUTPUT) : $(ELF)
+	$(PREFIX)objcopy -O $(OUTTYPE) $(ELF) $(OUTPUT)
 
-bin/talk.elf : $(OFILES) $(LINK)
-	@$(CC) $(LDFLAGS) -T $(LINK) -o bin/talk.elf $(OFILES)
+$(ELF) : $(OFILES) $(LINK)
+	$(CC) $(LDFLAGS) -T $(LINK) -o $(ELF) $(OFILES)
 
 bin/%.o : src/%.s Makefile
 	-mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
-src/linker.ld :
+$(LINK) :
 
-.PHONY : all clean
+.PHONY : all clean distclean

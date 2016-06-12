@@ -17,13 +17,12 @@
 .section .text
 
 atags:
-	ldmfd sp!, a1
 	b 2f
 
 1:
-	add a1, a1, #4
+	add r1, r1, #4
 2:
-	cmp a0, #0
+	cmp r0, #0
 	beq 1b		@ If equal, jump to local symbol 1 (B)efore.
 
 	bx lr		@ Return.

@@ -21,16 +21,16 @@
 .global DESCDT
 .global DESCHARD
 .global DESCUNKN
-.equ DESCATAGS,	0	@ Should be set if r2 contains an ATAGS pointer.
-.equ DESCDT,	1	@ Should be set if r2 contains an DEVICE TREE pointer.
-.equ DESCHARD,	2	@ Should be set if r2 is useless and the hardware is hardcoded.
-.equ DESCUNKN,	3	@ Should be set if r2 is useless because the hardware is unknown.
+DESCATAGS:	.word 0	@ Should be set if r2 contains an ATAGS pointer.
+DESCDT:		.word 1	@ Should be set if r2 contains an DEVICE TREE pointer.
+DESCHARD:	.word 2	@ Should be set if r2 is useless and the hardware is hardcoded.
+DESCUNKN:	.word 3	@ Should be set if r2 is useless because the hardware is unknown.
 
 @ Hardware description stored variables.
-DESCTYPE:
-	.word 0
-DESCADDR:
-	.word 0
+.global DESCTYPE
+.global DESCADDR
+DESCTYPE:	.word 0
+DESCADDR:	.word 0
 
 
 
