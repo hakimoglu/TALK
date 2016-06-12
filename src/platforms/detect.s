@@ -22,9 +22,9 @@
 @ IN:	r0:	ARM Linux device type.
 @ OUT:	r0:	DESC* - Defined in common.s.
 describe:
-	ldr r1, =0xC42		@ Raspberry Pi - Uses ATAGS.
+	ldr r1, =0xC42		@ Raspberry Pi - Uses DYNAMIC.
 	cmp r0, r1
-	ldreq r0, =DESCATAGS
+	ldreq r0, =DESCDYN
 	ldreq r0, [r0]
 	bxeq lr
 
