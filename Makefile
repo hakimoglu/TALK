@@ -33,8 +33,6 @@ LDFLAGS := -ffreestanding -O2 -nostdlib  -lgcc
 SRCFILES := $(shell find src -type f -name "*.s")
 OFILES := $(patsubst %.s,%.o,$(patsubst src/%,bin/%,$(SRCFILES)))
 
--include $(DEPFILES)
-
 all : $(OUTPUT) distclean
 
 clean : distclean
@@ -43,7 +41,6 @@ clean : distclean
 
 distclean :
 	-rm -f $(OFILES)
-	-rm -f $(DEPFILES)
 
 $(OUTPUT) : $(ELF)
 	$(PREFIX)objcopy -O $(OUTTYPE) $(ELF) $(OUTPUT)
