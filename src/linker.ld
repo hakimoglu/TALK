@@ -1,6 +1,7 @@
 ENTRY(start)
 
 SECTIONS {
+	KERNSTART = .;
 	.text : ALIGN(0x1000){
 		*(.boot)
 		*(.text)
@@ -12,4 +13,6 @@ SECTIONS {
 		*(.bss)
 		*(COMMON)
 	}
+	KERNEND = .;
+	KERNSIZE = KERNEND - KERNSTART;
 }

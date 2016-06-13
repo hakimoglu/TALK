@@ -52,4 +52,8 @@ bin/%.o : src/%.s
 	-mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY : all clean distclean
+git :
+	git add --all
+	git commit
+
+.PHONY : all clean git distclean
