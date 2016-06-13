@@ -20,6 +20,7 @@
 
 start:
 	setend le		@ Just make sure we're in little endian.
+	ldr r0,=TEST
 
 .section .bss
 

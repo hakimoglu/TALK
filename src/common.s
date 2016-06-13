@@ -16,22 +16,6 @@
 
 .section .data
 
-@ Hardware description types.
-.global DESCDYN
-.global DESCHARD
-.global DESCUNKN
-DESCDYN:	.word 1	@ Should be set if r2 contains an ATAGS or DEVICE TREE pointer.
-DESCHARD:	.word 2	@ Should be set if r2 is useless and the hardware is hardcoded.
-DESCUNKN:	.word 3	@ Should be set if r2 is useless because the hardware is unknown.
-
-@ Hardware description stored variables.
-.global DESCTYPE
-.global DESCADDR
-DESCTYPE:	.word 0
-DESCADDR:	.word 0
-
-
-
 
 .section .text
 
