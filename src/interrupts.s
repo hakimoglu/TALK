@@ -16,15 +16,49 @@
 
 .section .text
 
+@ Sets up interrupts.
+intsetup:
+	@ Load the interrupt structure into registers, then unload into the beginning of ram.
+	ldr r0, =interrupts
+	push {r4-r11}
+	ldmia r0!, {r4-r11}
+	mov r0, #0
+	stmia r0!, {r4-r11}
+	pop {r4-r11}
+
+	@ Enable IRQ and FIQ.
+	msr CPSR_c, #0x13
+
+	bx lr
+
+@ Undefined Instruction Interrupt
+intUND:
+	bx lr
+@ Syscall
+intSWI:
+	bx lr
+@ Abort in Instruction Prefetch
+intPRE:
+	bx lr
+@ Abort in Data Handling
+intDAT:
+	bx lr
+@ External IRQ
+intIRQ:
+	bx lr
+@ External FIQ
+intFIQ:
+	bx lr
+
 .section .data
 
 @ Data structure for interrupts.
 interrupts:
-	b		@ RESET - Supervisor Mode
-	b		@ UNDEFINED - Undefined Mode
-	b		@ SOFTWARE - Supervisor Mode
-	b		@ PREFETCH - Abort Mode
-	b		@ DATA - Abort Mode
-	b		@ RESERVED
-	b		@ EXTERNAL - Irq Mode
-	b		@ FASTEXTERNAL - Fiq Mode
+	b reset		@ RESET - Supervisor Mode
+	b intUND	@ UNDEFINED - Undefined Mode
+	b intSWI	@ SOFTWARE - Supervisor Mode
+	b intPRE	@ PREFETCH - Abort Mode
+	b intDAT	@ DATA - Abort Mode
+	b halt		@ RESERVED
+	b intIRQ	@ EXTERNAL - Irq Mode
+	b intFIQ	@ FASTEXTERNAL - Fiq Mode

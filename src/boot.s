@@ -16,9 +16,9 @@
 
 .section .boot
 
-.global start
+.global reset
 
-start:
+reset:
 	bl stack
 
 	b halt
@@ -61,5 +61,5 @@ stackbABT:
 	.skip 256
 stacktABT:
 stackbUND:
-	.skip .256
+	.skip 256
 stacktUND:
