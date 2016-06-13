@@ -27,7 +27,7 @@ ELF := bin/kernel.elf
 OUTPUT := kernel.img
 OUTTYPE := binary
 
-CFLAGS := -fpic -ffreestanding -std=gnu99  -O2 -march=armv8-a -mtune=cortex-a53
+CFLAGS := -fpic -ffreestanding -std=gnu99  -O2 -march=armv6zk -mcpu=arm1176jzf-s -mfloat-abi=hard -mfpu=vfp
 LDFLAGS := -ffreestanding -O2 -nostdlib  -lgcc
 
 SRCFILES := $(shell find src -type f -name "*.s")

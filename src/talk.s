@@ -19,8 +19,9 @@
 .global start
 
 start:
-	setend le		@ Just make sure we're in little endian.
-	ldr r0,=TEST
+	ldr sp,=stackt
+
+.section .text
 
 .section .bss
 
